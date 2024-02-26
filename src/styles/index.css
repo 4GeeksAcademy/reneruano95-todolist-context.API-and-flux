@@ -1,0 +1,9 @@
+html,
+body,
+#app {
+    height: 100%;
+}
+
+.container {
+    min-height: 100%
+}

@@ -1,32 +1,58 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { Button, Form, InputGroup } from "react-bootstrap";
+
 import { TaskContext } from "../store/AppContext";
+import { VerticallyCenteredModal } from "./VerticallyCenteredModal";
 
 
 const AddItem = () => {
     const { taskActions } = useContext(TaskContext);
 
+    const [modal, setModal] = useState(false)
+    const [modalShow, setModalShow] = useState(false);
+
+    const handleOnShowModal = () => [
+        setModalShow((prev) => prev = true)
+    ]
+
     const handleAddTask = (e) => {
         e.preventDefault();
 
         let textbox = e.target.elements.task;
-        taskActions({ type: "add", payload: textbox.value });
+        if (textbox.value.trim() !== '') {
+            setModal((prev) => prev = false)
+
+            taskActions({ type: "add", payload: textbox.value });
+        }
+        if (textbox.value.trim() === '') {
+            setModal((prev) => prev = true)
+        }
         textbox.value = "";
     }
+
     return (
-        <li className="list-group-item">
-            <form onSubmit={handleAddTask} className="d-flex justify-content-between">
-                <input name="task" type="text" className="w-100 form-control" />
-                <button
-                    type="submit"
-                    role="button"
-                    className="btn btn-info rounded-pill"
-                >
-                    +
-                    {/* <i className="bi bi-plus"></i> */}
-                </button>
-            </form>
-        </li>
-    );
+        <>
+            <form onSubmit={handleAddTask}>
+                <InputGroup className="mb-3" >
+                    <Form.Control
+                        name="task"
+                        placeholder="What's need to be done?"
+                        aria-label="What's need to be done?"
+                    />
+                    <Button
+                        variant="outline-secondary"
+                        type="submit"
+                        role="button"
+                        onClick={modal ? handleOnShowModal : undefined} >
+                        Add
+                    </Button>
+                </InputGroup >
+            </form >
+            {modal ? <VerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} /> : ''}
+        </>
+
+    )
 }
 
 export default AddItem
+

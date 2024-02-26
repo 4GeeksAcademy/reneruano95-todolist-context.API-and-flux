@@ -48,7 +48,7 @@ const AddItem = () => {
                     </Button>
                 </InputGroup >
             </form >
-            {modal ? <VerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} /> : ''}
+            {modal && <VerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} />}
         </>
 
     )
